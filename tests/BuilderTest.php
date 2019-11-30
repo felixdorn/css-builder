@@ -39,4 +39,18 @@ class BuilderTest extends TestCase
         $this->assertEquals('#id { box-shadow: 10px 10px 10px #000000; display: flex; align-items: items-center; }', $css);
     }
 
+
+    public function testToString()
+    {
+
+        $builder = BuilderFactory::create('#id');
+
+        $css = $builder
+            ->boxShadow('10px 10px 10px #000000')
+            ->display('flex')
+            ->alignItems('items-center');
+
+        $this->assertEquals('#id { box-shadow: 10px 10px 10px #000000; display: flex; align-items: items-center; }', (string)$css);
+    }
+
 }

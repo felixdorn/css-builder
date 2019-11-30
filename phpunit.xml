@@ -12,6 +12,9 @@
         <whitelist>
             <directory suffix=".php">src/</directory>
         </whitelist>
+        <exclude>
+            <file>src/functions.php</file>
+        </exclude>
     </filter>
 </phpunit>
 
