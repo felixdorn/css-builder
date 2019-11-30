@@ -587,12 +587,19 @@ namespace Felix\CssBuilder;
 class Builder
 {
 
+    /**
+     * @var string<string>
+     */
     private $properties;
     /**
      * @var string
      */
     private $selector;
 
+    /**
+     * Builder constructor.
+     * @param string $selector
+     */
     public function __construct(string $selector)
     {
         $this->selector = $selector;
@@ -612,7 +619,9 @@ class Builder
         return $this;
     }
 
-
+    /**
+     * @return string
+     */
     public function getCss(): string
     {
 
@@ -623,5 +632,13 @@ class Builder
         }
 
         return "{$this->selector} { " . implode(' ', $css) . ' }';
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getCss();
     }
 }
