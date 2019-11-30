@@ -1,0 +1,23 @@
+{
+    "name": "felixdorn/css-builder",
+    "description": "OOP css builder. Designed with simplicity.",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^8.4"
+    },
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "felixdorn",
+            "email": "felixdorn@protonmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Felix\\CssBuilder\\": "src"
+        }
+    }
+}
