@@ -1,0 +1,17 @@
+{
+  "commit": {
+    "message": ":bookmark: release {version}",
+    "empty": false,
+    "stageAll": true
+  },
+  "push": {
+    "remote": "origin"
+  },
+  "tag": {
+    "name": "{version}",
+    "message": "Release {version}"
+  },
+  "hooks": {
+    "beforeRelease": "./vendor/bin/phpunit && ./vendor/bin/phpcs && ./vendor/bin/phpstan"
+  }
+}
