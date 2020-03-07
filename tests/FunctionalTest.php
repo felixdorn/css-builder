@@ -16,12 +16,16 @@
  * along with CssBuilder.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Felix\CssBuilder;
+namespace Felix\Tests\CssBuilder;
 
-class BuilderFactory
+use Felix\CssBuilder\Builder;
+use PHPUnit\Framework\TestCase;
+
+class FunctionalTest extends TestCase
 {
-    public static function create(string $selector = ''): Builder
+    public function testItReturnsBuilderInstance()
     {
-        return new Builder($selector);
+        $this->assertInstanceOf(Builder::class, css());
+        $this->assertInstanceOf(Builder::class, css('#id'));
     }
 }

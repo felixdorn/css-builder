@@ -89,7 +89,7 @@ namespace Felix\CssBuilder;
  * @method Builder borderBottomRightRadius(string $value)
  * @method Builder borderBottomStyle(string $value)
  * @method Builder borderBottomWidth(string $value)
- * @method Builder borderBottomlEftFitLength(string $value)
+ * @method Builder borderBottomLeftFitLength(string $value)
  * @method Builder borderBoundary(string $value)
  * @method Builder borderBreak(string $value)
  * @method Builder borderCollapse(string $value)
@@ -588,33 +588,41 @@ class Builder
 {
 
     /**
-     * @var string<string>
+     * @var array<string, string>
      */
-    private $properties;
+    private $properties = [];
     /**
      * @var string
      */
-    private $selector;
+    private $selector = '';
 
     /**
      * Builder constructor.
      * @param string $selector
      */
-    public function __construct(string $selector)
+    public function __construct(string $selector = '')
     {
         $this->selector = $selector;
     }
 
     /**
-     * @param $name
-     * @param $arguments
+     * @param string $name
+     * @param mixed[] $arguments
      * @return Builder
+     * @codeCoverageIgnore
      */
-    public function __call($name, array $arguments)
+    public function __call(string $name, array $arguments)
     {
-        $property = mb_strtolower(preg_replace('/((?<=[^$])[A-Z]|(?<!\d|^)\d)/u', '-$1', $name));
+        // Converts something like textTransform to text-transform
+        $property = mb_strtolower(
+            preg_replace(
+                '/((?<=[^$])[A-Z]|(?<!\d|^)\d)/u',
+                '-$1',
+                $name
+            ) ?? ''
+        );
 
-        $this->properties[$property] = $arguments[0] . ';';
+        $this->properties[$property] = $arguments[0];
 
         return $this;
     }
@@ -622,23 +630,39 @@ class Builder
     /**
      * @return string
      */
-    public function getCss(): string
+    public function __toString(): string
     {
-
-        $css = [];
-
-        foreach ($this->properties as $index => $property) {
-            $css[] = $index . ': ' . $property;
+        if ($this->selector === '') {
+            return $this->inline();
         }
 
-        return "{$this->selector} { " . implode(' ', $css) . ' }';
+        return $this->getCss();
+    }
+
+    public function inline(): string
+    {
+        return sprintf('%s', implode(' ', $this->build()));
+    }
+
+    /**
+     * @return string[]
+     */
+    private function build(): array
+    {
+        $css = [];
+
+        foreach ($this->properties as $name => $value) {
+            $css[] = sprintf('%s: %s;', $name, $value);
+        }
+
+        return $css;
     }
 
     /**
      * @return string
      */
-    public function __toString(): string
+    public function getCss(): string
     {
-        return $this->getCss();
+        return sprintf('%s { %s }', $this->selector, implode(' ', $this->build()));
     }
 }
